@@ -1,0 +1,25 @@
+node_modules/
+.local/
+sources/
+test-results/
+playwright-report/
+*.log
+.env
+.env.*
+!.env.example
+
+# Personal employer trial with local resume paths and applicant details.
+scripts/test-aeg-live.js
+
+# Downloaded Google OAuth client configuration.
+client_secret*.json
+credentials.json
+gmail-client.json
+
+# Per-checkout personal data must never be published.
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*.db
+*.pem
+*.key

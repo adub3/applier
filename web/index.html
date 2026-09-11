@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="app-token" content="__APP_TOKEN__">
+  <title>Job Desk</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='13' fill='%23151515'/%3E%3Ctext x='14' y='34' font-family='Georgia' font-size='36' fill='%23ffffff'%3Ej.%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="/" aria-label="Job Desk home"><span class="brand-mark">j.</span><span>job desk</span></a>
+    <div class="workspace-label">YOUR WORKSPACE</div>
+    <nav aria-label="Main navigation">
+      <button class="nav-item active" data-view="discover"><span>⌕</span> Jobs <span class="nav-count" id="nav-total">—</span></button>
+      <button class="nav-item" data-view="shortlist"><span>☆</span> Shortlist <span class="nav-count" id="nav-queue">0</span></button>
+      <button class="nav-item" data-view="profile"><span>◎</span> Profile</button>
+      <button class="nav-item" data-view="applications"><span>✓</span> Applications <span class="nav-count" id="nav-questions">0</span></button>
+      <button class="nav-item" data-view="sources"><span>⇄</span> Settings</button>
+    </nav>
+    <div class="sidebar-note"><span class="status-dot"></span> Runs on your computer<p>Your resume and model reviews stay local.</p></div>
+  </aside>
+  <main>
+    <header class="topbar"><span id="breadcrumb">WORKSPACE <span>/</span> DISCOVER</span><span class="local-pill"><span class="status-dot"></span> Local workspace</span></header>
+    <div id="task-banner" class="task-banner hidden" role="status" aria-live="polite"><span class="spinner"></span><span id="task-message"></span></div>
+    <div id="notice" class="notice hidden" role="alert"></div>
+    <section id="discover-view" class="view">
+      <div class="page-heading"><div><h1 id="page-title">Jobs</h1><p class="subtitle" id="page-subtitle">A clearer view of the roles that fit your experience.</p></div></div>
+      <div class="stats-grid">
+        <div class="stat"><span class="stat-label">In your catalog</span><strong id="stat-total">—</strong><span class="stat-foot">From connected job lists</span></div>
+        <div class="stat"><span class="stat-label">Greenhouse & Workday</span><strong id="stat-supported">—</strong><span class="stat-foot">Your target platforms</span></div>
+        <div class="stat"><span class="stat-label">Employer pages checked</span><strong id="stat-verified">—</strong><span class="stat-foot">Open when last checked</span></div>
+        <div class="stat accent"><span class="stat-label">On your shortlist</span><strong id="stat-queue">—</strong><span class="stat-foot">Keep the promising ones close</span></div>
+      </div>
+      <div class="search-panel">
+        <form id="search-form"><label for="query">What kind of work are you looking for?</label><div class="search-row"><span class="search-icon">⌕</span><input id="query" placeholder="Search roles" autocomplete="off"><button class="button primary" id="match-button" type="submit">Search</button></div></form>
+        <div class="quick-lanes"><span>Explore a direction</span><button data-lane="quantitative research, trading, probability, Python">Quant research</button><button data-lane="machine learning, applied research, PyTorch">AI & machine learning</button><button data-lane="data science, statistics, SQL, Python">Data science</button><button data-lane="software engineering, backend, C++, Python">Software</button></div>
+      </div>
+      <div class="catalog-layout">
+        <aside class="filters"><div class="filter-title"><h2>Filters</h2><button id="toggle-filters" class="text-button filter-toggle" aria-expanded="false">Show filters +</button><button id="reset-filters" class="text-button">Reset</button></div>
+          <label>Job type<select id="kind"><option value="all">All types</option><option value="new-grad">New graduate / full-time</option><option value="internship">Internships</option></select></label>
+          <label>Role family<select id="family"><option value="all">All role families</option><option>Quant</option><option>AI / ML</option><option>Data science</option><option>Data engineering</option><option>Research</option><option>Analytics</option><option>Software</option><option>Other</option></select></label>
+          <label>Platform<select id="platform"><option value="all">Greenhouse + Workday</option><option value="greenhouse">Greenhouse</option><option value="workday">Workday</option><option value="any">All platforms</option></select></label>
+          <label>Region<select id="scope"><option value="US">United States listings</option><option value="International">International listings</option><option value="all">All regions</option></select></label>
+          <label>City or location<input id="location" placeholder="Any location"></label>
+          <label>Work arrangement<select id="workMode"><option value="all">Any / not specified</option><option>Remote</option><option>Hybrid</option></select></label>
+          <label>Minimum annual pay (USD)<input id="minSalary" type="number" min="0" step="5000" placeholder="No minimum"></label>
+          <p class="filter-help">A pay minimum excludes missing pay and hourly rates. Repository pay is not employer-verified.</p>
+          <label class="check-label"><input type="checkbox" id="excludePhdTitle"> Exclude PhD roles by title</label>
+          <label class="check-label"><input type="checkbox" id="verifiedOnly"> Employer page checked & open</label>
+          <button id="save-filters" class="button secondary full">Save this search</button>
+        </aside>
+        <section class="results"><div class="results-heading"><div><h2 id="results-title">Roles <span id="results-count">—</span></h2><p id="ranking-note"></p></div><div class="results-controls"><button id="refresh-button" class="text-button">Refresh</button><label class="sort-label">Sort by <select id="sort"><option value="match">Relevance</option><option value="newest">Newest in source</option><option value="company">Company</option></select></label></div></div>
+          <div class="table-wrap"><table><thead><tr><th class="save-col"><span class="sr-only">Shortlist</span></th><th>Role</th><th>Location</th><th>Platform</th><th>Fit</th><th>Age</th></tr></thead><tbody id="jobs-body"></tbody></table></div>
+          <div id="empty-state" class="empty-state hidden"><span>⌕</span><h3>No roles in this view</h3><p>Try a wider role family, region, or job type.</p></div>
+          <div class="table-footer"><span id="showing-count"></span><button class="button secondary" id="load-more">Show more roles</button></div>
+        </section>
+      </div>
+      <p class="page-footnote">A match is a starting point. Location eligibility, sponsorship, and required qualifications still need to be checked.</p>
+    </section>
+    <section id="profile-view" class="view hidden"><div class="page-heading"><div><h1>Profile</h1><p class="subtitle">Use your own words and facts to find relevant work.</p></div></div><div class="profile-grid"><section class="panel"><h2>Resume & experience</h2><p id="resume-source" class="muted">Import a PDF or TXT resume.</p><label class="upload-button button secondary">↑ &nbsp; Choose resume<input id="resume-upload" type="file" accept=".pdf,.txt" hidden></label><label class="editor-label" for="profile-text">Extracted resume text</label><textarea id="profile-text" rows="24" spellcheck="false"></textarea><p class="muted">Check dates, degrees, and work history. Parsing can make mistakes.</p></section><section class="panel"><h2>Contact details</h2><p class="muted">Keep these ready for the application stage.</p><label>Full name<input id="profile-name"></label><label>Email<input id="profile-email" type="email"></label><label>Phone<input id="profile-phone" type="tel"></label><label>LinkedIn URL<input id="profile-linkedin" type="url"></label><label class="check-label"><input id="profile-approved" type="checkbox"> I have checked this profile for accuracy.</label><button id="save-profile" class="button primary full">Save profile</button><div class="profile-note"><strong>Matching is available now.</strong><p>Saving a profile or shortlisting a role does not submit an application. Greenhouse automation is available in Application prep; final submission uses your confirmation.</p></div></section></div><div class="profile-grid application-work"><section class="panel"><h2>Application context <span class="detail-tag">MARKDOWN</span></h2><p class="muted">Stable facts you want reused: work authorization, links, preferences, and factual background.</p><textarea id="application-context" rows="15" spellcheck="false" aria-label="Application context Markdown"></textarea><button id="save-application-context" class="button secondary full">Save context</button></section><section class="panel"><h2>Instructions & boundaries <span class="detail-tag">MARKDOWN</span></h2><p class="muted">Set your writing preferences, automation boundaries, and anything that must always stay for your review.</p><textarea id="application-instructions" rows="15" spellcheck="false" aria-label="Application instructions Markdown"></textarea><button id="save-application-instructions" class="button secondary full">Save instructions</button></section></div></section>
+    <section id="applications-view" class="view hidden"><div class="page-heading"><div><h1>Applications</h1><p class="subtitle">Track each role and resolve the questions a portal asks as you go.</p></div></div><div class="profile-grid application-work"><section class="panel"><div class="panel-heading"><div><h2>Application tracker</h2><p class="muted">Track roles as planning, in progress, submitted, or done. Status updates from the browser workflow; you can also edit it here.</p></div><button id="export-applications" class="button secondary">Export CSV</button></div><div id="application-drafts" class="application-list"></div></section><section class="panel"><h2>Question inbox <span id="question-count" class="detail-tag">0 OPEN</span></h2><p class="muted">Copy in any portal question that needs a real answer. Save your answer here, then Resume the browser workflow.</p><div id="application-questions" class="application-list"></div></section></div><section class="panel application-work"><h2>Reusable answer library</h2><p class="muted">Answers marked reusable are filled only when a future portal asks the same normalized question. They are never generated.</p><div id="reusable-answers" class="application-list"></div></section></section>
+    <section id="sources-view" class="view hidden"><div class="page-heading"><div><h1>Settings</h1><p class="subtitle">Fresh job data, with analysis that stays on your machine.</p></div></div><div class="source-grid"><section class="panel"><div class="source-icon">↳</div><h2>SpeedyApply job lists</h2><p class="muted">AI/ML, data science, and quant opportunities for new graduates and interns.</p><a class="inline-link" href="https://github.com/speedyapply/2027-AI-College-Jobs" target="_blank" rel="noopener noreferrer">View source repository ↗</a><dl id="source-info"></dl><button id="source-refresh" class="button secondary full">Pull current listings</button></section><section class="panel"><div class="source-icon">◎</div><h2>Employer descriptions</h2><p class="muted">Check full descriptions and availability directly on Greenhouse and supported Workday career sites.</p><p class="muted">This checks up to 80 jobs in your current filters. Some Workday sites may need manual inspection.</p><button id="source-enrich" class="button secondary full">Check employer pages</button></section><section class="panel"><div class="source-icon">✧</div><h2>Local semantic search</h2><p class="muted">Nomic embeddings retrieve related work. Your installed DeepSeek 8B model can review a job against your resume.</p><div id="model-info"></div><button id="source-index" class="button secondary full">Prepare semantic search</button><p class="filter-help">Changing a job description refreshes that job's search vectors.</p></section></div><section class="panel limits-panel"><h2>What this version does</h2><p>Imports real listings, checks supported employer pages, filters jobs, searches by meaning, gives local model reviews, and saves a shortlist.</p><p class="muted">Greenhouse automation fills recognized fields, uploads your selected resume, and submits after confirmation. Workday automation is planned.</p></section></section>
+  </main>
+  <div class="drawer-backdrop hidden" id="drawer-backdrop"></div>
+  <aside class="drawer hidden" id="job-drawer" role="dialog" aria-modal="true" aria-label="Job details"><button class="drawer-close" id="close-drawer" aria-label="Close job details">×</button><div id="drawer-content"></div></aside>
+</body>
+</html>

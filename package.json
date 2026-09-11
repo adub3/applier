@@ -1,0 +1,23 @@
+{
+  "name": "local-job-matcher",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "jobs": "node src/cli.js",
+    "test": "node --test test/*.test.js",
+    "test:workflow": "node --test test/workflow-contract.test.js",
+    "test:ui": "node scripts/smoke-ui.js",
+    "test:live": "node scripts/smoke-workflow.js"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "dependencies": {
+    "cheerio": "^1.2.0",
+    "mailparser": "^3.9.24",
+    "pdf-parse": "^2.4.5",
+    "playwright": "^1.63.0"
+  }
+}
