@@ -1,4 +1,4 @@
-﻿# Job Desk
+# Job Desk
 
 A minimal, local job-search workspace. Browse listings, save a shortlist, compare roles with your resume, and prepare applications from one place.
 
@@ -230,5 +230,5 @@ scripts/   Browser checks and development utilities
 .local/    Private runtime data (ignored)
 sources/   Downloaded listing repository (ignored)
 ```
-#   a p p l i e r  
- 
+
+*applier*
